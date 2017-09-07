@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: kafka
+  name: zookeeper-01
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: zookeeper-01
+      labels:
+        app: zookeeper-01
+    spec:
+      containers:
+      - name: zookeeper-01
+        image: confluentinc/cp-zookeeper:3.3.0-1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 2181
+          - containerPort: 2888
+          - containerPort: 3888
+        env:
+          - name: ZOOKEEPER_CLIENT_PORT
+            value: "2181"
+        volumeMounts:
+          - mountPath: /var/lib/zookeeper/data
+            name: zk-data
+          - mountPath: /var/lib/zookeeper/log
+            name: zk-txn-logs
+      volumes:
+        - name: zk-data
+          emptyDir: {}
+        - name: zk-txn-logs
+          emptyDir: {}

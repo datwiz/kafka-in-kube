@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: kafka
+  name: control-center
+spec:
+  selector:
+    app: control-center
+  ports:
+    - protocol: TCP
+      port: 9021
+      targetPort: 9021
+      nodePort: 30001
+  type: NodePort

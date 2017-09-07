@@ -1,0 +1,41 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: kafka
+  name: control-center
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: control-center
+      labels:
+        app: control-center
+    spec:
+      containers:
+      - name: control-center
+        image: confluentinc/cp-enterprise-control-center:3.3.0-1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 9021
+        env:
+          - name: CONTROL_CENTER_ZOOKEEPER_CONNECT
+            value: "zookeeper-01:2181"
+          - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
+            value: "kafka-01:9092"
+          - name: CONTROL_CENTER_REPLICATION_FACTOR
+            value: "1"
+          - name: CONTROL_CENTER_MONITORING_INTERCEPTOR_PARTITIONS
+            value: "1"
+          - name: CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS
+            value: "1"
+          - name: CONTROL_CENTER_STREAMS_NUM_STREAM_THREADS
+            value: "2"
+          - name: CONTROL_CENTER_CONNECT_CLUSTER
+            value: "http://connect:8082"
+        volumeMounts:
+          - mountPath: /var/lib/confluent-control-center
+            name: kafka-control-center
+      volumes:
+        - name: kafka-control-center
+          emptyDir: {}
