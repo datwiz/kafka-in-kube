@@ -30,6 +30,12 @@ spec:
             value: "1"
           - name: KAFKA_OPTS
             value: "-Djava.net.preferIPv4Stack=true"
+          - name: KAFKA_METRICS_REPORTERS
+            value: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
+          - name: KAFKA_CONFLUENT_METRICS_REPORT_BOOTSTRAP_SERVERS
+            value: "kafka-01:9092"
+          - name: KAFKA_CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS
+            value: "1"
         volumeMounts:
           - mountPath: /var/lib/kafka/data
             name: kafka-01-data
